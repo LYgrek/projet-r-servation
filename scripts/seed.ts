@@ -13,7 +13,10 @@ import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import * as schema from "../src/db/schema";
 
-const client = createClient({ url: process.env.DATABASE_URL ?? "file:data/parc.db" });
+const client = createClient({
+  url: process.env.DATABASE_URL ?? "file:data/parc.db",
+  authToken: process.env.DATABASE_AUTH_TOKEN,
+});
 const db = drizzle(client, { schema });
 
 /** Construit une date à J+`days`, à l'heure indiquée (heure locale du serveur). */
