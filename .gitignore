@@ -1,0 +1,22 @@
+# dépendances
+/node_modules
+
+# build Next.js
+/.next/
+/out/
+/build
+*.tsbuildinfo
+next-env.d.ts
+
+# base de données locale (recréée avec `npm run db:setup`)
+/data/*.db
+/data/*.db-*
+
+# environnement
+.env
+.env*.local
+
+# divers
+.DS_Store
+npm-debug.log*
+.vercel

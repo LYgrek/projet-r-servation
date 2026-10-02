@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+/*
+ * Thème graphique du Parc Évasion — esprit « carnet de randonnée » :
+ * papier crème, encre vert très sombre, contours épais et ombres franches,
+ * motifs de courbes de niveau (cartes topographiques).
+ */
+@theme {
+  --font-sans: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+
+  /* Papier et encre */
+  --color-paper: #f2ede1;
+  --color-paper-deep: #e7dfcc;
+  --color-card: #fffbf2;
+  --color-surface: #f2ede1;
+  --color-ink: #14231b;
+  --color-ink-muted: #48584f;
+  --color-ink-subtle: #77837b;
+  --color-line: #d8cfbb;
+
+  /* Couleurs d'accent */
+  --color-sun: #ff5a36;
+  --color-sun-soft: #ffd9cc;
+  --color-lime: #d7f26b;
+  --color-lagoon: #2b7a9b;
+  --color-berry: #6c4cf5;
+  --color-blush: #f4a6c4;
+
+  /* Vert forêt (couleur principale) */
+  --color-brand-50: #eef6ef;
+  --color-brand-100: #d7ebda;
+  --color-brand-200: #b0d6b6;
+  --color-brand-300: #7dba88;
+  --color-brand-500: #3b8a54;
+  --color-brand-600: #2a7044;
+  --color-brand-700: #1f5a37;
+  --color-brand-800: #18472c;
+  --color-brand-900: #123622;
+  --color-brand-950: #0b2215;
+
+  /* Ombres « tampon » décalées, sans flou */
+  --shadow-hard-sm: 2px 2px 0 0 var(--color-ink);
+  --shadow-hard: 4px 4px 0 0 var(--color-ink);
+  --shadow-hard-lg: 7px 7px 0 0 var(--color-ink);
+  --shadow-card: 4px 4px 0 0 var(--color-ink);
+  --shadow-card-hover: 7px 7px 0 0 var(--color-ink);
+
+  --animate-fade-in: fade-in 0.35s ease-out both;
+  --animate-sway: sway 2.4s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes sway {
+    0%,
+    100% {
+      transform: rotate(-6deg);
+    }
+    50% {
+      transform: rotate(6deg);
+    }
+  }
+}
+
+/* Motif de courbes de niveau, dessiné dans la couleur du texte (currentColor). */
+@utility bg-topo {
+  background-image: repeating-radial-gradient(
+    circle at 90% 120%,
+    transparent 0 20px,
+    color-mix(in oklab, currentColor 26%, transparent) 20px 22px
+  );
+}
+
+/* Petits points réguliers (fond des en-têtes). */
+@utility bg-dots {
+  background-image: radial-gradient(color-mix(in oklab, currentColor 28%, transparent) 1.2px, transparent 1.6px);
+  background-size: 16px 16px;
+}
+
+/* Texte en contour (gros chiffres décoratifs). */
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-ink);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+  }
+
+  /* Grain de papier par-dessus toute la page. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-variation-settings: "wdth" 90;
+  }
+
+  :focus-visible {
+    @apply outline-3 outline-offset-2 outline-sun;
+  }
+
+  ::selection {
+    @apply bg-lime text-ink;
+  }
+}
+
+/*
+ * Éléments animés par GSAP : masqués avant l'hydratation pour éviter un
+ * « flash » de contenu, puis révélés par JavaScript. La classe `js` est
+ * ajoutée par un script en tête de page : sans JavaScript, tout reste visible.
+ * Les personnes qui préfèrent réduire les animations ne sont pas concernées.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal],
+  .js [data-intro] {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
