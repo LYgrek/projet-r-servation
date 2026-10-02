@@ -15,9 +15,9 @@ const globalForDb = globalThis as unknown as { libsqlClient?: Client };
 const client =
   globalForDb.libsqlClient ??
   createClient({
-    url: process.env.DATABASE_URL ?? "file:data/parc.db",
+    url: process.env.DATABASE_URL ?? process.env.TURSO_DATABASE_URL ?? "file:data/parc.db",
     // Requis pour une base distante (Turso), ignoré pour un fichier local.
-    authToken: process.env.DATABASE_AUTH_TOKEN,
+    authToken: process.env.DATABASE_AUTH_TOKEN ?? process.env.TURSO_AUTH_TOKEN,
   });
 
 if (process.env.NODE_ENV !== "production") globalForDb.libsqlClient = client;

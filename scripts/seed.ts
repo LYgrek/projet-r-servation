@@ -14,8 +14,8 @@ import { migrate } from "drizzle-orm/libsql/migrator";
 import * as schema from "../src/db/schema";
 
 const client = createClient({
-  url: process.env.DATABASE_URL ?? "file:data/parc.db",
-  authToken: process.env.DATABASE_AUTH_TOKEN,
+  url: process.env.DATABASE_URL ?? process.env.TURSO_DATABASE_URL ?? "file:data/parc.db",
+  authToken: process.env.DATABASE_AUTH_TOKEN ?? process.env.TURSO_AUTH_TOKEN,
 });
 const db = drizzle(client, { schema });
 
